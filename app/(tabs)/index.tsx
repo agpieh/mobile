@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+// 1. Import useRouter từ expo-router
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
+  
+  // 2. Khởi tạo router
+  const router = useRouter(); 
+
+  // 3. Viết hàm xử lý khi bấm nút
+  const handleLogin = () => {
+    // router.push('/tên_file') sẽ chuyển bạn đến file đó trong thư mục app
+    // Ở đây ta chuyển đến file app/notifications.tsx
+    router.push('/notifications'); 
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Để tránh thanh trạng thái đè lên nội dung trên Android */}
       <StatusBar barStyle="dark-content" />
-
       <View style={styles.content}>
-        {/* Tiêu đề lớn */}
+        
         <Text style={styles.title}>Đăng nhập</Text>
-
         <View style={styles.separator} />
-
-        {/* Tiêu đề phụ */}
         <Text style={styles.subtitle}>Nhập số điện thoại</Text>
-
-        {/* Mô tả */}
         <Text style={styles.description}>
           Dùng số điện thoại để đăng nhập hoặc đăng ký tài khoản tại OneHousing Pro
         </Text>
 
-        {/* Ô nhập liệu */}
         <TextInput
           style={styles.input}
           placeholder="Nhập số điện thoại của bạn"
@@ -33,29 +37,29 @@ export default function HomeScreen() {
           placeholderTextColor="#A0A0A0"
         />
 
-        {/* Nút Tiếp tục */}
-        {/* Nút Tiếp tục - Code mới */}
+        {/* 4. Gắn hàm handleLogin vào sự kiện onPress của nút */}
         <TouchableOpacity 
-          // Nếu phoneNumber có dữ liệu thì disabled = false (bấm được), ngược lại là true
           disabled={phoneNumber.length === 0} 
+          onPress={handleLogin} // <--- Thêm dòng này
           style={[
             styles.button,
-            // Logic đổi màu nền: Có chữ -> Màu xanh, Không có chữ -> Màu xám nhạt
             { backgroundColor: phoneNumber.length > 0 ? '#007AFF' : '#F5F5F5' }
           ]}
         >
           <Text style={[
             styles.buttonText,
-            // Logic đổi màu chữ: Có chữ -> Màu trắng, Không có chữ -> Màu xám đậm
             { color: phoneNumber.length > 0 ? '#FFFFFF' : '#A0A0A0' }
           ]}>
             Tiếp tục
           </Text>
         </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
 }
+
+// ... (Phần const styles = StyleSheet.create({...}) giữ nguyên như cũ)
 
 const styles = StyleSheet.create({
   container: {
