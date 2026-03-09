@@ -1,26 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default function SignInValidationScreen() {
+export default function SignInAdvancedScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [error, setError] = useState('');
 
-  // Hàm kiểm tra định dạng số điện thoại
-  const validatePhoneNumber = (phone) => {
-    // Biểu thức chính quy (Regex): Bắt đầu bằng số 0 và theo sau là đúng 9 chữ số (tổng 10 số)
-    const phoneRegex = /^0\d{9}$/;
-    return phoneRegex.test(phone);
+  // 1. Dùng setTimeout để đảm bảo UI render xong mới bật Alert, tránh crash Expo Go
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Alert.alert("Chào mừng", "Chào mừng bạn đến với ứng dụng!");
+    }, 500); 
+    
+    // Cleanup function để tránh lỗi bộ nhớ nếu chuyển trang nhanh
+    return () => clearTimeout(timer); 
+  }, []);
+
+  // 2. Hàm format định dạng số điện thoại
+  const formatPhoneNumber = (text) => {
+    const cleaned = ('' + text).replace(/\D/g, ''); // Xóa hết chữ, chỉ để lại số
+    let formatted = '';
+    
+    if (cleaned.length > 0) formatted += cleaned.substring(0, 3);
+    if (cleaned.length > 3) formatted += ' ' + cleaned.substring(3, 6);
+    if (cleaned.length > 6) formatted += ' ' + cleaned.substring(6, 8);
+    if (cleaned.length > 8) formatted += ' ' + cleaned.substring(8, 10);
+    
+    return formatted;
   };
 
-  // Hàm xử lý khi bấm nút Tiếp tục
-  const handleContinue = () => {
-    if (validatePhoneNumber(phoneNumber)) {
-      Alert.alert("Thành công", "Số điện thoại hợp lệ!");
-      // Ở đây sau này bạn có thể cho chuyển trang: router.push('/home')
+  // 3. Xử lý khi đang gõ
+  const handleChangeText = (text) => {
+    const formatted = formatPhoneNumber(text);
+    setPhoneNumber(formatted);
+
+    const cleanedLength = formatted.replace(/\D/g, '').length;
+    // Báo lỗi realtime nếu đã nhập nhưng chưa đủ 10 số
+    if (cleanedLength > 0 && cleanedLength < 10) {
+      setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
     } else {
-      Alert.alert(
-        "Lỗi định dạng", 
-        "Số điện thoại không hợp lệ! Vui lòng nhập số có 10 chữ số và bắt đầu bằng số 0."
-      );
+      setError(''); // Xóa lỗi nếu đã nhập đủ hoặc xóa trắng
+    }
+  };
+
+  // 4. Xử lý khi bấm nút "Tiếp tục"
+  const handleContinue = () => {
+    const cleanedLength = phoneNumber.replace(/\D/g, '').length;
+    
+    if (cleanedLength === 10 && phoneNumber.startsWith('0')) {
+      setError('');
+      Alert.alert("Thành công", "Số điện thoại hợp lệ!");
+    } else {
+      setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
     }
   };
 
@@ -31,26 +61,27 @@ export default function SignInValidationScreen() {
         <Text style={styles.title}>Đăng nhập</Text>
         <View style={styles.separator} />
         <Text style={styles.subtitle}>Nhập số điện thoại</Text>
-        <Text style={styles.description}>
-          Dùng số điện thoại để đăng nhập hoặc đăng ký tài khoản tại OneHousing Pro
-        </Text>
 
         <TextInput
-          style={styles.input}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Nhập số điện thoại của bạn"
           keyboardType="numeric"
           value={phoneNumber}
-          onChangeText={setPhoneNumber}
+          onChangeText={handleChangeText}
           placeholderTextColor="#A0A0A0"
-          maxLength={10} // Chặn người dùng nhập quá 10 số
+          maxLength={13} 
         />
+        
+        {/* Hiển thị lỗi nếu có */}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <TouchableOpacity 
           disabled={phoneNumber.length === 0} 
           onPress={handleContinue} 
           style={[
             styles.button,
-            { backgroundColor: phoneNumber.length > 0 ? '#007AFF' : '#F5F5F5' }
+            { backgroundColor: phoneNumber.length > 0 ? '#007AFF' : '#F5F5F5' },
+            { marginTop: error ? 15 : 40 } // Căn lề an toàn hơn
           ]}
         >
           <Text style={[
@@ -92,19 +123,20 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 10,
   },
-  description: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 30,
-    lineHeight: 20,
-  },
   input: {
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
     fontSize: 16,
     paddingVertical: 10,
-    marginBottom: 40,
     color: '#000',
+  },
+  inputError: {
+    borderBottomColor: 'red',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
   },
   button: {
     paddingVertical: 15,

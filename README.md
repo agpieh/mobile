@@ -1,14 +1,15 @@
-# Bài tập Buổi 5 - React Native Props, Callback & State
+# Bài tập Buổi 6 - TextInput nâng cao & useEffect
 
 ## Thông tin sinh viên
 - **Họ và tên:** Trần Đại Hiệp
 - **Mã sinh viên:** 21810310632
 
 ## Mô tả
-Thực hành xây dựng ứng dụng đổi màu nền:
-1. Sử dụng **Props** và **Callback** để tạo Custom Component `ColorButton` có thể tái sử dụng.
-2. Sử dụng hook `useState` trong Component cha để quản lý trạng thái màu nền.
-3. Cập nhật màu nền của toàn bộ ứng dụng dựa vào nút bấm được chọn.
+Thực hành các kỹ thuật nâng cao với State và Hook:
+- Sử dụng `useState` để xử lý validation realtime khi nhập và khi click submit.
+- Tự động format Auto-spacing cho số điện thoại (XXX XXX XX XX).
+- Sử dụng hook `useEffect` để kích hoạt Alert chào mừng chỉ 1 lần duy nhất khi khởi chạy ứng dụng.
 ## Demo
-![Screenshot](./screenshot_bt5.jpg)
-![Screenshot](./screenshot_bt5.5.jpg)
+![Screenshot](./6.1.1.jpg)
+![Screenshot](./6.1.2.jpg)
+![Screenshot](./6.1.3.jpg)  
