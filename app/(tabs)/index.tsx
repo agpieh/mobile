@@ -1,56 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-// 1. Import useRouter từ expo-router
 import { useRouter } from 'expo-router';
+import React, { useContext, useState } from 'react';
+import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+// Import Context của Buổi 8
+import { AppContext } from '../../context/AppContext';
 
-export default function SignInAdvancedScreen() {
+export default function SignInScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   
-  // 2. Khởi tạo router
-  const router = useRouter(); 
+  const router = useRouter();
+  const { setIsLoggedIn } = useContext(AppContext);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      Alert.alert("Chào mừng", "Chào mừng bạn đến với ứng dụng!");
-    }, 500); 
-    return () => clearTimeout(timer); 
-  }, []);
-
-  const formatPhoneNumber = (text) => {
+  // Tính năng format số có khoảng cách (Buổi 6 & 7)
+  const formatPhoneNumber = (text: string) => {
     const cleaned = ('' + text).replace(/\D/g, ''); 
     let formatted = '';
-    
     if (cleaned.length > 0) formatted += cleaned.substring(0, 3);
     if (cleaned.length > 3) formatted += ' ' + cleaned.substring(3, 6);
     if (cleaned.length > 6) formatted += ' ' + cleaned.substring(6, 8);
     if (cleaned.length > 8) formatted += ' ' + cleaned.substring(8, 10);
-    
     return formatted;
   };
 
-  const handleChangeText = (text) => {
+  const handleChangeText = (text: string) => {
     const formatted = formatPhoneNumber(text);
     setPhoneNumber(formatted);
 
     const cleanedLength = formatted.replace(/\D/g, '').length;
     if (cleanedLength > 0 && cleanedLength < 10) {
-      setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
+      setError('Số điện thoại không đúng định dạng.');
     } else {
       setError(''); 
     }
   };
 
-  const handleContinue = () => {
+  const handleLogin = () => {
     const cleanedLength = phoneNumber.replace(/\D/g, '').length;
     
-    // 3. Nếu số hợp lệ -> Chuyển sang màn hình Home
+    // Nếu nhập đúng 10 số và bắt đầu bằng số 0
     if (cleanedLength === 10 && phoneNumber.startsWith('0')) {
       setError('');
-      // Dòng code điều hướng sang file app/home.tsx
-      router.push('/home'); 
+      // 1. Context API: Bật trạng thái đã đăng nhập (Buổi 8)
+      setIsLoggedIn(true); 
+      // 2. Chuyển sang màn hình bên trong
+      router.replace('/home'); 
     } else {
-      setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
+      setError('Số điện thoại không đúng định dạng.');
     }
   };
 
@@ -76,7 +71,7 @@ export default function SignInAdvancedScreen() {
 
         <TouchableOpacity 
           disabled={phoneNumber.length === 0} 
-          onPress={handleContinue} 
+          onPress={handleLogin} 
           style={[
             styles.button,
             { backgroundColor: phoneNumber.length > 0 ? '#007AFF' : '#F5F5F5' },
@@ -87,8 +82,25 @@ export default function SignInAdvancedScreen() {
             styles.buttonText,
             { color: phoneNumber.length > 0 ? '#FFFFFF' : '#A0A0A0' }
           ]}>
-            Tiếp tục
+          
           </Text>
+          <TouchableOpacity 
+          disabled={phoneNumber.length === 0} 
+          onPress={handleLogin} 
+          style={[ /* style của nút Đăng nhập */ ]}
+        >
+          <Text style={{ color: '#080c04' }}>Đăng nhập</Text>
+        </TouchableOpacity>
+
+        {/* THÊM 2 NÚT NÀY VÀO DƯỚI NÚT ĐĂNG NHẬP */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+          <TouchableOpacity onPress={() => router.push('/signup')}>
+            <Text style={{ color: '#007AFF' }}>Đăng ký ngay   </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/forgot-password')}>
+            <Text style={{ color: '#007AFF' }}>      Quên mật khẩu?</Text>
+          </TouchableOpacity>
+        </View>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

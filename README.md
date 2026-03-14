@@ -1,13 +1,19 @@
-# Bài tập Buổi 7 - React Navigation (Expo Router)
+# Bài tập Buổi 8 - Context API & Auth Flow
 
 ## Thông tin sinh viên
 - **Họ và tên:** Trần Đại Hiệp
 - **Mã sinh viên:** 21810310632
 
 ## Mô tả
-Áp dụng cơ chế điều hướng Navigation để nâng cấp màn hình Đăng nhập: 
-Xử lý logic khi người dùng nhập số điện thoại hợp lệ thì tự động điều hướng từ SignInScreen sang HomeScreen.
+Hoàn thiện luồng đăng nhập sử dụng Context API:
+- Quản lý state toàn cục `isLoggedIn` bằng `useContext`.
+- Xây dựng cơ chế Auth Guard tại Layout gốc để tự động điều hướng:
+  - **Auth Stack:** Gồm SignIn, SignUp, ForgotPassword.
+  - **Main Stack:** Gồm Bottom Tabs (Home, Profile).
+- Khi SignIn/SignUp thành công -> Cập nhật `isLoggedIn = true` -> Tự động chuyển vào Main Stack.
+- Khi bấm Sign Out tại Profile -> Cập nhật `isLoggedIn = false` -> Tự động đẩy ra Auth Stack.
 
 ## Demo
-![Screenshot](./bt7.jpg)
-![Screenshot](./bt7.1.jpg)
+![alt text](8.1.jpg)
+![alt text](8.2.jpg)
+![alt text](8.3.jpg)
