@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+// 1. Import useRouter từ expo-router
+import { useRouter } from 'expo-router';
 
 export default function SignInAdvancedScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
+  
+  // 2. Khởi tạo router
+  const router = useRouter(); 
 
-  // 1. Dùng setTimeout để đảm bảo UI render xong mới bật Alert, tránh crash Expo Go
   useEffect(() => {
     const timer = setTimeout(() => {
       Alert.alert("Chào mừng", "Chào mừng bạn đến với ứng dụng!");
     }, 500); 
-    
-    // Cleanup function để tránh lỗi bộ nhớ nếu chuyển trang nhanh
     return () => clearTimeout(timer); 
   }, []);
 
-  // 2. Hàm format định dạng số điện thoại
   const formatPhoneNumber = (text) => {
-    const cleaned = ('' + text).replace(/\D/g, ''); // Xóa hết chữ, chỉ để lại số
+    const cleaned = ('' + text).replace(/\D/g, ''); 
     let formatted = '';
     
     if (cleaned.length > 0) formatted += cleaned.substring(0, 3);
@@ -28,27 +29,26 @@ export default function SignInAdvancedScreen() {
     return formatted;
   };
 
-  // 3. Xử lý khi đang gõ
   const handleChangeText = (text) => {
     const formatted = formatPhoneNumber(text);
     setPhoneNumber(formatted);
 
     const cleanedLength = formatted.replace(/\D/g, '').length;
-    // Báo lỗi realtime nếu đã nhập nhưng chưa đủ 10 số
     if (cleanedLength > 0 && cleanedLength < 10) {
       setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
     } else {
-      setError(''); // Xóa lỗi nếu đã nhập đủ hoặc xóa trắng
+      setError(''); 
     }
   };
 
-  // 4. Xử lý khi bấm nút "Tiếp tục"
   const handleContinue = () => {
     const cleanedLength = phoneNumber.replace(/\D/g, '').length;
     
+    // 3. Nếu số hợp lệ -> Chuyển sang màn hình Home
     if (cleanedLength === 10 && phoneNumber.startsWith('0')) {
       setError('');
-      Alert.alert("Thành công", "Số điện thoại hợp lệ!");
+      // Dòng code điều hướng sang file app/home.tsx
+      router.push('/home'); 
     } else {
       setError('Số điện thoại không đúng định dạng. Vui lòng nhập lại');
     }
@@ -72,7 +72,6 @@ export default function SignInAdvancedScreen() {
           maxLength={13} 
         />
         
-        {/* Hiển thị lỗi nếu có */}
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <TouchableOpacity 
@@ -81,7 +80,7 @@ export default function SignInAdvancedScreen() {
           style={[
             styles.button,
             { backgroundColor: phoneNumber.length > 0 ? '#007AFF' : '#F5F5F5' },
-            { marginTop: error ? 15 : 40 } // Căn lề an toàn hơn
+            { marginTop: error ? 15 : 40 } 
           ]}
         >
           <Text style={[
@@ -97,54 +96,14 @@ export default function SignInAdvancedScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingTop: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 20,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
-    marginBottom: 30,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
-    marginBottom: 10,
-  },
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    fontSize: 16,
-    paddingVertical: 10,
-    color: '#000',
-  },
-  inputError: {
-    borderBottomColor: 'red',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginTop: 5,
-  },
-  button: {
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  container: { flex: 1, backgroundColor: '#fff', paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 },
+  content: { paddingHorizontal: 20, paddingTop: 30 },
+  title: { fontSize: 24, fontWeight: 'bold', color: '#000', marginBottom: 20 },
+  separator: { height: 1, backgroundColor: '#E0E0E0', marginBottom: 30 },
+  subtitle: { fontSize: 18, fontWeight: '500', color: '#000', marginBottom: 10 },
+  input: { borderBottomWidth: 1, borderBottomColor: '#E0E0E0', fontSize: 16, paddingVertical: 10, color: '#000' },
+  inputError: { borderBottomColor: 'red' },
+  errorText: { color: 'red', fontSize: 12, marginTop: 5 },
+  button: { paddingVertical: 15, borderRadius: 5, alignItems: 'center' },
+  buttonText: { fontSize: 16, fontWeight: '600' },
 });
