@@ -9,5 +9,5 @@
 Xử lý logic khi người dùng nhập số điện thoại hợp lệ thì tự động điều hướng từ SignInScreen sang HomeScreen.
 
 ## Demo
-![Screenshot](./bt7.png)
-![Screenshot](./bt7.1.png)
+![Screenshot](./bt7.jpg)
+![Screenshot](./bt7.1.jpg)
