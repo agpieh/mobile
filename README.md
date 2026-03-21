@@ -15,7 +15,7 @@
    - Logic giỏ hàng thông minh: Tự động cộng dồn số lượng (+1) nếu sản phẩm đã tồn tại, hiển thị Toast Notification mượt mà, tính tổng tiền tự động và có màn hình "Empty State" khi giỏ hàng trống.
 
 ## Hình ảnh Demo
-![text](z7642220678381_75e3d21bb484542280a5c725c6f280c9.jpg) 
-![text](z7642220688778_4cab382f538313108143de12b2d3f76c.jpg) 
-![text](z7642220705244_c8f40a5bfb4316d2034f5aab656ae8e5.jpg) 
 ![text](z7642220713390_84f7ab9f423275f07a5faffbe77b7971.jpg)
+![text](z7642220678381_75e3d21bb484542280a5c725c6f280c9.jpg) 
+![text](z7642220705244_c8f40a5bfb4316d2034f5aab656ae8e5.jpg) 
+![text](z7642220688778_4cab382f538313108143de12b2d3f76c.jpg) 
