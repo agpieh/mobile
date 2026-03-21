@@ -1,23 +1,21 @@
-# Bài tập Buổi 9 - Hoàn thiện ứng dụng (Stack + Bottom Tabs + Context)
-
 ## Thông tin sinh viên
 - **Họ và tên:** Trần Đại Hiệp
 - **Mã sinh viên:** 21810310632
 
-## Yêu cầu bài toán đã hoàn thành
-1. **Luồng Navigation:**
-   - **Auth Stack:** Gồm màn hình Đăng nhập (SignIn) với giao diện nhập Email/Password hiện đại và nút Social Login (Google/Facebook).
-   - **Main Stack:** Gồm thanh điều hướng Bottom Tabs với 2 màn hình là Explorer (Home) và Account (Profile).
-2. **Quản lý trạng thái (Context API & AsyncStorage):**
-   - Khởi tạo `AppContext` lưu trữ trạng thái `isLoggedIn` và `userEmail`.
-   - Tích hợp `AsyncStorage` để duy trì phiên đăng nhập offline (tự động vào Home khi mở lại app).
-   - Xây dựng Auth Guard tại file Layout gốc để tự động điều hướng người dùng.
-3. **Giao diện Component-Driven:**
-   - **Màn hình Explorer:** Được chia làm 4 group rõ ràng (Search, Categories, Popular, Sale-off). Áp dụng tư duy tái sử dụng code bằng component `SectionBlock` (chứa Header và FlatList).
-   - **Màn hình Account:** Hiển thị Avatar, đồng bộ Email người dùng đã nhập từ màn SignIn thông qua Context, tích hợp nút Sign Out để xóa bộ nhớ.
+## Các tính năng đã hoàn thiện
+1. **Thiết kế Giao diện (UI/UX) chuẩn Figma:**
+   - Xây dựng 3 màn hình chính: `Home`, `Scan`, và `Cart` sử dụng các assets hình ảnh và icon nội bộ (Local Images) đúng theo bản thiết kế.
+   - Thanh điều hướng **Bottom Tabs** được custom giao diện (bo góc, ẩn label, icon tự đổi màu) với nút Scan ở giữa được thiết kế nổi bật.
+2. **Luồng Điều hướng (Navigation):**
+   - Ứng dụng **Expo Router** để xử lý mượt mà luồng chuyển trang (Stack & Tabs).
+   - Truyền tham số động (Pass Parameters) từ màn hình Home sang màn hình Scan để hiển thị đúng Tên, Hình ảnh và Giá của từng sản phẩm được chọn.
+3. **Quản lý Trạng thái & Dữ liệu (State Management):**
+   - Sử dụng **Context API** để quản lý giỏ hàng toàn cục.
+   - Tích hợp **AsyncStorage** giúp lưu trữ giỏ hàng offline (không bị mất dữ liệu khi tắt app).
+   - Logic giỏ hàng thông minh: Tự động cộng dồn số lượng (+1) nếu sản phẩm đã tồn tại, hiển thị Toast Notification mượt mà, tính tổng tiền tự động và có màn hình "Empty State" khi giỏ hàng trống.
 
 ## Hình ảnh Demo
- ![text](z7639009531388_02c56ae9e659dcec40e8033fff315dae.jpg) 
-![alt text](z7639009464529_293abc38515d2cf1e8f6851d04e538f6.jpg)
-
- ![text](z7639009545400_5e56b3fad9e0a9b22bd214dd33518417.jpg)
+![text](z7642220678381_75e3d21bb484542280a5c725c6f280c9.jpg) 
+![text](z7642220688778_4cab382f538313108143de12b2d3f76c.jpg) 
+![text](z7642220705244_c8f40a5bfb4316d2034f5aab656ae8e5.jpg) 
+![text](z7642220713390_84f7ab9f423275f07a5faffbe77b7971.jpg)
